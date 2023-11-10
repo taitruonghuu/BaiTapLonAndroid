@@ -15,13 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class MyTaskAdapter extends RecyclerView.Adapter<MyTaskAdapter.MyViewHolder> {
-
-    private Context context;
     private ArrayList<MyTask> tasksList;
+    private Context context;
+    private ITaskItemListener taskItemListener;
 
-    public MyTaskAdapter(Context context, ArrayList<MyTask> tasksList) {
-        this.context = context;
+    public MyTaskAdapter(Context context, ArrayList<MyTask> tasksList, ITaskItemListener taskItemListener) {
         this.tasksList = tasksList;
+        this.context = context;
+        this.taskItemListener = taskItemListener;
     }
 
     @NonNull
@@ -45,6 +46,12 @@ public class MyTaskAdapter extends RecyclerView.Adapter<MyTaskAdapter.MyViewHold
             intent.putExtra("myTask", myTask);
             context.startActivity(intent);
         });
+
+        holder.cbComplete.setOnCheckedChangeListener((view, checked) -> {
+            if (taskItemListener != null) {
+                taskItemListener.handleTaskCompleteCheckedChange(myTask, checked);
+            }
+        });
     }
 
     @Override
@@ -54,6 +61,10 @@ public class MyTaskAdapter extends RecyclerView.Adapter<MyTaskAdapter.MyViewHold
         }
 
         return 0;
+    }
+
+    public interface ITaskItemListener {
+        void handleTaskCompleteCheckedChange(MyTask myTask, boolean isChecked);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

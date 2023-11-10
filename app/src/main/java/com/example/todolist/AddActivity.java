@@ -39,6 +39,11 @@ public class AddActivity extends AppCompatActivity {
                     Toast.makeText(AddActivity.this, "Thêm công việc thất bại", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(AddActivity.this, "Thêm công việc thành công", Toast.LENGTH_SHORT).show();
+
+                    // Clear text và focus vào EditText.
+                    edtTaskTitle.setText("");
+                    edtTaskContent.setText("");
+                    edtTaskTitle.requestFocus();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

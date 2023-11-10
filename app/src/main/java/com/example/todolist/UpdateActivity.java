@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -45,10 +43,14 @@ public class UpdateActivity extends AppCompatActivity {
             myTask.setContent(String.valueOf(edtTaskContentUpdate.getText()));
 
             DatabaseHelper db = new DatabaseHelper(UpdateActivity.this);
-            long result = db.updateTask(myTask.getId(), myTask.getTitle(), myTask.getContent(), myTask.getComplete());
+            long result = db.updateTask(myTask);
 
             if (result == -1) {
                 Toast.makeText(UpdateActivity.this, "Cập nhật công việc thất bại", Toast.LENGTH_SHORT).show();
+
+                edtTaskTitleUpdate.setText("");
+                edtTaskContentUpdate.setText("");
+                edtTaskTitleUpdate.requestFocus();
             } else {
                 Toast.makeText(UpdateActivity.this, "Cập nhật công việc thành công", Toast.LENGTH_SHORT).show();
             }

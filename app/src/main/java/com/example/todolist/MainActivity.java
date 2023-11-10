@@ -33,7 +33,13 @@ public class MainActivity extends AppCompatActivity {
         mapViews();
         addEvents();
 
-        myTaskAdapter = new MyTaskAdapter(MainActivity.this, taskList);
+        myTaskAdapter = new MyTaskAdapter(MainActivity.this, taskList, new MyTaskAdapter.ITaskItemListener() {
+            @Override
+            public void handleTaskCompleteCheckedChange(MyTask myTask, boolean isChecked) {
+                myTask.setComplete(isChecked ? 1 : 0);
+                db.updateTask(myTask);
+            }
+        });
         rcTasks.setAdapter(myTaskAdapter);
         rcTasks.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }

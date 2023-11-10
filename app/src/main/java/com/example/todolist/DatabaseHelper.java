@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private Context context;
+    private final Context context;
     private static final String DATABASE_NAME = "TaskManagement.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -72,20 +72,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Cập nhật công việc.
-    public long updateTask(int id, String title, String content, int complete) {
+    public long updateTask(@NonNull MyTask myTask) {
         ContentValues task = new ContentValues();
-        task.put(MY_TASK_TITLE, title);
-        task.put(MY_TASK_CONTENT, content);
-        task.put(MY_TASK_COMPLETE, complete);
+        task.put(MY_TASK_TITLE, myTask.getTitle());
+        task.put(MY_TASK_CONTENT, myTask.getContent());
+        task.put(MY_TASK_COMPLETE, myTask.getComplete());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.update(MY_TASK_TABLE_NAME, task, "task_id=?", new String[]{String.valueOf(id)});
+        return db.update(MY_TASK_TABLE_NAME, task, MY_TASK_ID + "=?", new String[]{String.valueOf(myTask.getId())});
     }
 
     // Xóa công việc.
     public long deleteTask(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(MY_TASK_TABLE_NAME, "task_id=?", new String[]{String.valueOf(id)});
+        return db.delete(MY_TASK_TABLE_NAME, MY_TASK_ID + "=?", new String[]{String.valueOf(id)});
     }
 }
